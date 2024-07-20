@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <errno.h>
 
 int connectTCP(const char *, const char *);
 int errexit(const char *,...);
@@ -42,10 +43,15 @@ int TCPdaytime(const char *host, const char *service)
 
 	printf("Connection established...\n");
 
-	while ((n = read(s, buf, LINELEN)) > 0){
-		buf[n] = '\0';
-		fputs(buf, stdout);
-		nplus += n;
+	while (((n = read(s, buf, LINELEN)) > 0) ||\
+				(n == -1 && (errno == EAGAIN || errno == EWOULDBLOCK))){
+		if (n > 0){
+			buf[n] = '\0';
+			fputs(buf, stdout);
+			nplus += n;
+		}
+		else
+			usleep(15000);
 	}
 	printf("%d bytes read\n", nplus);
 	close(s);

@@ -45,7 +45,7 @@ int TCPecho(const char *host, const char *service)
 
 	while(fgets(buf, sizeof buf, stdin)) {
 		outchars = strlen(buf);
-		printf("Echo Sent[%d]: %s\n", outchars, buf);
+		//printf("Echo Sent[%d]: %s\n", outchars, buf);
 		if (write(s, buf, outchars) < 0)
 			errexit("Write error: %s\n", strerror(errno));
 		
@@ -53,7 +53,7 @@ int TCPecho(const char *host, const char *service)
 			n = read(s, &buf[inchars], outchars - inchars);
 			if (n < 0) {
 				if (errno == EAGAIN || errno == EWOULDBLOCK) {
-					printf("Nothing to read...Retry\n");
+					//printf("Nothing to read...Retry\n");
 					usleep(300);
 					n = 0;
 				}
@@ -67,8 +67,8 @@ int TCPecho(const char *host, const char *service)
 		}
 		if (wasread){
 			buf[inchars] = '\0';
-			//fputs(buf, stdout);
-			printf("Echo Reply[%d, n=%d]: %s\n", inchars,n, buf);
+			fputs(buf, stdout);
+			//printf("Echo Reply[%d, n=%d]: %s\n", inchars,n, buf);
 		}
 	}
 	close(s);

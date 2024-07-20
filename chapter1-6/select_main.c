@@ -16,20 +16,21 @@ int main (int argc, char* argv[])
 	
 	FD_ZERO(&rdfds);
 	ts.tv_sec = 5;
-	ts.tv_usec = 2000;
+	ts.tv_usec = 0;
 
 	printf("Term id %s\n", ctermid(termID));
 
 	fd = open(termID, O_RDWR);
 	FD_SET(fd, &rdfds);
-	while (s = select(fd+1, &rdfds, NULL, NULL, &ts) >= 0) {
+	while ((s = select(getdtablesize(), &rdfds, NULL, NULL, &ts)) >= 0) {
 		if (s == 0) {
 			printf("Nothing to read...\n");
+			goto nothing_to_read;
 		}
 		else
 			printf("Waking up from select ready to read %d\n", s);
 		//break;
-		for (int ifd = 0 ; ifd < fd+1 ; ++ifd) {
+		for (int ifd = 0 ; ifd < getdtablesize() ; ++ifd) {
 			if (FD_ISSET(ifd, &rdfds)) {
 					printf("Socket ready %d\n", ifd);
 				printf("Reading %d...\n", ifd);
@@ -54,6 +55,11 @@ int main (int argc, char* argv[])
 		}
 		if (strcmp(cmd, "Quit") == 0)
 			break;
+nothing_to_read:
+		FD_ZERO(&rdfds);
+		FD_SET(fd, &rdfds);
+		ts.tv_sec = 5;
+		ts.tv_usec = 0;
 	}
 	if (s < 0)
 		perror("Select Error");

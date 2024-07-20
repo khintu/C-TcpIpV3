@@ -38,7 +38,7 @@ int main (int argc, char* argv[])
 int TCPecho(const char *host, const char *service)
 {
 	char buf[LINELEN+1];
-	int s, n, wasread;
+	int s, n, wasread, rdlast = 0;
 	int outchars, inchars;
 	
 	//signal(SIGPIPE, SIG_IGN);
@@ -60,8 +60,10 @@ int TCPecho(const char *host, const char *service)
 				errexit("Write error: %s\n", strerror(errno));
 		}
 
-		if (strcmp(buf, "Bye\n") == 0)
+		if (strcmp(buf, "Bye\n") == 0) {
 			shutdown(s, SHUT_WR);
+			rdlast = 1;
+		}
 
 		for (wasread = 0,inchars = 0 ; inchars < outchars ; inchars += n) {
 			n = read(s, &buf[inchars], outchars - inchars);
@@ -86,6 +88,8 @@ int TCPecho(const char *host, const char *service)
 		if (wasread){
 			buf[inchars] = '\0';
 			fputs(buf, stdout);
+			if (rdlast)
+				break;
 		}
 	}
 	close(s);

@@ -44,6 +44,7 @@ childworker:
 			sum += i;
 		}
 		printf("%d The sum is %d\n", pid, sum);
+		sleep(10);
 	}
 	return 0;
 }
