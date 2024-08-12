@@ -28,3 +28,14 @@ in WAN. Thus the only solution to WAN problems is timeout and adaptive retransmi
 that are problems solved in the TCP/connection-oriented transport protocol/Layer4.
 Use it, use UDP only for LAN which is sufficiently reliable, and for multicast/
 broadcast.
+
+TCP/UDP servers can be iterative, concurrent, or single process apparent concurrent.
+Iterative should be used for most trival computation of read requests and instant
+reply, while concurrent --multiprocess-- servers should be used for more complex non-
+trivial request-reply computations or where simultaneous I/O ops are required by slave
+processes. But, multiprocess servers have an overhead of process creation & termination
+which could be ~20% for total execution time. To remedy this drawback, single process
+asynchronous I/O servers using select() are recommeneded to generalize concurrency. The
+kernels implementation of the network stack and the comprising system calls like select()
+are preemptive and provide more real time experience to clients than multi-process concurrent
+servers which can be scheduled (RR/LRU/MRU) out of CPU.

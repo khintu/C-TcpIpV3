@@ -29,7 +29,7 @@ int passivesock(const char *service, const char *transport, const int qlen)
 	else if ((sin.sin_port = htons((u_short)atoi(service))) == 0)
 		errexit("Service not in integer form '%s'\n", service);
 	else 
-		printf("Service name could not be resolved '%s'\n", service);
+		printf("Service name could not be resolved '%s', port number specified\n", service);
 
 	/* Transport protocol/type of service for server socket */
 	if ((ppe = getprotobyname(transport)) == NULL)
