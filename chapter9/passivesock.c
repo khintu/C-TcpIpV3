@@ -25,7 +25,7 @@ int passivesock(const char *service, const char *transport, const int qlen)
 
 	/* Service port number to bind to */
 	if ((pse = getservbyname(service, transport)) != NULL)
-		sin.sin_port = pse->s_port + portbase;
+		sin.sin_port = pse->s_port + htons(portbase);
 	else if ((sin.sin_port = htons((u_short)atoi(service))) == 0)
 		errexit("Service not in integer form '%s'\n", service);
 	else 
