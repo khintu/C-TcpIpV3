@@ -18,6 +18,7 @@ int passivesock(const char *service, const char *transport, const int qlen)
 	struct protoent *ppe;
 	struct sockaddr_in sin = {0};
 	int s, type;
+	const int sockreuseport  = 1;
 	
 	
 	sin.sin_family = AF_INET;
@@ -44,6 +45,10 @@ int passivesock(const char *service, const char *transport, const int qlen)
 	if ((s = socket(PF_INET, type, ppe->p_proto)) < 0)
 		errexit("Could not create socket: %s\n", strerror(errno));
 	
+	/* exc 14_6: man 7 socket -- reuse port number option for binding to port */
+	if (setsockopt(s, SOL_SOCKET, SO_REUSEPORT, (void*)&sockreuseport, sizeof(int)) < 0)
+		errexit("setsockopt error: %s\n", strerror(errno));
+
 	/* Bind socket to sin */
 	if (bind(s, (struct sockaddr *)&sin, sizeof(sin)) < 0)
 		errexit("Can't bind to %s port: %s\n", service, strerror(errno));

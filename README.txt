@@ -39,3 +39,10 @@ asynchronous I/O servers using select() are recommeneded to generalize concurren
 kernels implementation of the network stack and the comprising system calls like select()
 are preemptive and provide more real time experience to clients than multi-process concurrent
 servers which can be scheduled (RR/LRU/MRU) out of CPU.
+
+Preallocation: When client sends a connect request and server has no available threads to service
+the TCP/IP 3-way handshake accepts the connection and is ready to unblock, the client connect 
+returns with socket in ESTABLISHED state, but is hung on read until a server thread becomes
+aviable to run its accept call and return with waiting client socket. But is the listen QLEN
+becomes full no more connections from clients are accepted and are dropped.
+from a waiting accept call in a server thread

@@ -41,6 +41,18 @@ exc_14_4:
 	gcc chapter9/passivesock.c chapter9/passiveUDP.c chapter10/passiveTCP.c chapter7/errexit.c chapter14/exc_14_4.c chapter14/sv_funcs.c -o superd
 	gcc chapter7/connectsock.c chapter7/connectUDP.c chapter7/errexit.c chapter7/UDPtime.c -o time
 
+exc_14_6:
+	gcc chapter9/passivesock.c chapter9/passiveUDP.c chapter10/passiveTCP.c chapter7/errexit.c chapter14/exc_14_6.c chapter14/sv_funcs.c -o superd
+	gcc chapter7/connectsock.c chapter7/connectTCP.c chapter7/errexit.c chapter7/TCPecho.c -o echo	
+	gcc chapter14/inetd_echod.c chapter7/errexit.c -o inetd_echod
+
+exc_udp_shm:
+	gcc -I./chapter15 chapter9/passivesock.c chapter9/passiveUDP.c chapter7/errexit.c chapter15/glb_shm_obj.c chapter15/exc_15_udp_shm.c -o timed
+
+exc_udp_shm2:
+	gcc -I./chapter15 chapter9/passivesock.c chapter9/passiveUDP.c chapter7/errexit.c chapter15/glb_shm_obj.c chapter15/exc_15_udp_shm2.c -o timed
+
+
 # Defaults client/servers
 daytimetcp:
 	gcc chapter7/connectsock.c chapter7/connectTCP.c chapter7/errexit.c chapter7/TCPdaytime.c -o daytime
@@ -85,7 +97,26 @@ superd:
 	gcc chapter7/connectsock.c chapter7/connectTCP.c chapter7/errexit.c chapter7/TCPtime.c -o time
 	gcc chapter7/connectsock.c chapter7/connectTCP.c chapter7/errexit.c chapter14/TCPchargen.c -o chargen
 
-all: daytimetcp daytimedtcp timeudp timetcp timedudp echotcp echodtcp mechodtcp mdaytimedtcp mdaytimed msvcdudp superd
+inetd_daytimed:
+	gcc chapter14/inetd_daytimed.c -o inetd_daytimed
+	sudo kill -s SIGHUP `pidof inetd`
+
+pre_echodtcp:
+	gcc chapter7/errexit.c chapter9/passivesock.c chapter10/passiveTCP.c chapter15/tcp_preallctn_echod.c -o echod
+
+pre_timedudp:
+	gcc chapter9/passivesock.c chapter9/passiveUDP.c chapter7/errexit.c chapter15/udp_preallctn_timed.c -o timed
+
+delyd_echodtcp:
+	gcc chapter7/errexit.c chapter9/passivesock.c chapter10/passiveTCP.c chapter15/tcp_delayed_allctn.c -o echod
+
+delyd_ad_persist_echodtcp:
+	gcc chapter7/errexit.c chapter9/passivesock.c chapter10/passiveTCP.c chapter15/tcp_delayed_allctn_ad_persist.c -o echod
+
+delyd_ad_prst_shm_echodtcp:
+	gcc -I./chapter15 chapter7/errexit.c chapter9/passivesock.c chapter10/passiveTCP.c chapter15/glb_shm_obj.c chapter15/tcp_delayed_allctn_ad_persist_shm.c -o echod
+
+all: daytimetcp daytimedtcp timeudp timetcp timedudp echotcp echodtcp mechodtcp mdaytimedtcp mdaytimed msvcdudp superd inetd_daytimed
 
 clean:
-	rm -f a.out time timed daytimed daytime echo echod mechod mdaytimed exc12_3 daytimet daytimeu msvcd chargen superd
+	rm -f a.out time timed daytimed daytime echo echod mechod mdaytimed exc12_3 daytimet daytimeu msvcd chargen superd inetd_daytimed inetd_echod
