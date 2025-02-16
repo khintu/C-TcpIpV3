@@ -52,6 +52,14 @@ exc_udp_shm:
 exc_udp_shm2:
 	gcc -I./chapter15 chapter9/passivesock.c chapter9/passiveUDP.c chapter7/errexit.c chapter15/glb_shm_obj.c chapter15/exc_15_udp_shm2.c -o timed
 
+exc_15_6:
+	gcc chapter7/errexit.c chapter9/passivesock.c chapter10/passiveTCP.c chapter15/exc_15_6.c -o echod
+
+exc_15_7:
+	gcc chapter9/passivesock.c chapter9/passiveUDP.c chapter7/errexit.c chapter15/exc_15_7.c -o msvcd
+	gcc chapter7/connectsock.c chapter7/connectUDP.c chapter7/errexit.c chapter7/UDPdaytime.c -o daytime
+	gcc chapter7/connectsock.c chapter7/connectUDP.c chapter7/errexit.c chapter7/UDPtime.c -o time
+	gcc chapter7/connectsock.c chapter7/connectUDP.c chapter7/errexit.c chapter7/UDPecho.c -o echo	
 
 # Defaults client/servers
 daytimetcp:
