@@ -124,7 +124,22 @@ delyd_ad_persist_echodtcp:
 delyd_ad_prst_shm_echodtcp:
 	gcc -I./chapter15 chapter7/errexit.c chapter9/passivesock.c chapter10/passiveTCP.c chapter15/glb_shm_obj.c chapter15/tcp_delayed_allctn_ad_persist_shm.c -o echod
 
-all: daytimetcp daytimedtcp timeudp timetcp timedudp echotcp echodtcp mechodtcp mdaytimedtcp mdaytimed msvcdudp superd inetd_daytimed
+techotcp:
+	gcc chapter16/connectsock.c chapter16/connectTCP.c chapter7/errexit.c chapter16/TCPtecho.c -o techo
+
+techotcp2:
+	gcc chapter16/connectsock.c chapter16/connectTCP.c chapter7/errexit.c chapter16/TCPtecho2.c -o techo
+
+techotcp3:
+	gcc chapter16/connectsock.c chapter16/connectTCP.c chapter7/errexit.c chapter16/TCPtecho3.c -o techo
+
+tcpxdr:
+	gcc -I/usr/include/tirpc -I./chapter19 chapter19/xdr_common_endc.c chapter19/connectsock.c chapter19/connectTCP.c chapter7/errexit.c chapter19/TCP_xdr_client.c -ltirpc -o xclient
+	
+tcpxdrd:
+	gcc -I/usr/include/tirpc -I./chapter19 chapter19/xdr_common_endc.c chapter19/passivesock.c chapter19/passiveTCP.c chapter7/errexit.c chapter19/TCP_xdr_server.c -ltirpc -o xserver
+
+all: daytimetcp daytimedtcp timeudp timetcp timedudp echotcp echodtcp mechodtcp mdaytimedtcp mdaytimed msvcdudp superd inetd_daytimed inetd_echod techo xclient xserver
 
 clean:
-	rm -f a.out time timed daytimed daytime echo echod mechod mdaytimed exc12_3 daytimet daytimeu msvcd chargen superd inetd_daytimed inetd_echod
+	rm -f a.out time timed daytimed daytime echo echod mechod mdaytimed exc12_3 daytimet daytimeu msvcd chargen superd inetd_daytimed inetd_echod techo xclient xserver
