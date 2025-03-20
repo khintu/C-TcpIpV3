@@ -7,7 +7,8 @@
 
 int connectTCP(const char *, const char *);
 int errexit(const char *,...);
-
+int sendNBytes(int s, void *buf, int nchars);
+int recvNBytes(int s, void *buf, int nchars);
 
 int main (int argc, char* argv[])
 {
@@ -34,9 +35,9 @@ int main (int argc, char* argv[])
 	strcpy(m.name, "Praveen Singh");
 	strcpy(m.number, "213-314-4466");
 	xEncodeMsg(buffer, &m);
-  write(s, buffer, sizeof buffer);
+  sendNBytes(s, buffer, sizeof buffer);
 
-  while ((n = read(s, buffer, sizeof buffer)) > 0){
+  while ((n = recvNBytes(s, buffer, sizeof buffer)) > 0){
 		xDecodeMsg(buffer, &m);
 		break;
 	}

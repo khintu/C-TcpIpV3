@@ -134,10 +134,10 @@ techotcp3:
 	gcc chapter16/connectsock.c chapter16/connectTCP.c chapter7/errexit.c chapter16/TCPtecho3.c -o techo
 
 tcpxdr:
-	gcc -I/usr/include/tirpc -I./chapter19 chapter19/xdr_common_endc.c chapter19/connectsock.c chapter19/connectTCP.c chapter7/errexit.c chapter19/TCP_xdr_client.c -ltirpc -o xclient
+	gcc -I/usr/include/tirpc -I./chapter19 chapter19/rdwrnonblckio.c chapter19/xdr_common_endc.c chapter19/connectsock.c chapter19/connectTCP.c chapter7/errexit.c chapter19/TCP_xdr_client.c -ltirpc -o xclient
 	
 tcpxdrd:
-	gcc -I/usr/include/tirpc -I./chapter19 chapter19/xdr_common_endc.c chapter19/passivesock.c chapter19/passiveTCP.c chapter7/errexit.c chapter19/TCP_xdr_server.c -ltirpc -o xserver
+	gcc -I/usr/include/tirpc -I./chapter19 chapter19/rdwrnonblckio.c chapter19/xdr_common_endc.c chapter19/passivesock.c chapter19/passiveTCP.c chapter7/errexit.c chapter19/TCP_xdr_server.c -ltirpc -o xserver
 
 all: daytimetcp daytimedtcp timeudp timetcp timedudp echotcp echodtcp mechodtcp mdaytimedtcp mdaytimed msvcdudp superd inetd_daytimed inetd_echod techo xclient xserver
 

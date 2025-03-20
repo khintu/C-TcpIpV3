@@ -56,3 +56,32 @@ int recvnonblk(int s, void* buf, int nchars)
 		return -1;
 	return n;
 }
+
+
+int sendNBytes(int s, void *buf, int nchars)
+{
+	int cc = 0;
+	int idx = 0;
+	while (nchars && (cc = sendnonblk(s, ((unsigned char*)buf)+idx, nchars)) > 0)
+			nchars-=cc,idx+=cc;
+	if (cc <= 0)
+		return cc;
+	else if (nchars == 0)
+		return idx;
+	else
+		return -1;
+}
+
+int recvNBytes(int s, void *buf, int nchars)
+{
+	int cc = 0;
+	int idx = 0;
+	while (nchars && (cc = recvnonblk(s, ((unsigned char*)buf)+idx, nchars)) > 0)
+			nchars-=cc,idx+=cc;
+	if (cc <= 0)
+		return cc;
+	else if (nchars == 0)
+		return idx;
+	else
+		return -1;
+}
