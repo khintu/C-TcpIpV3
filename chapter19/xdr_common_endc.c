@@ -2,6 +2,8 @@
 #include <string.h>
 #include <xdr_common_decl.h>
 
+int errexit(const char *,...);
+
 int xEncodeMsg(char *buffer, struct MsgXdr *m)
 {
 	XDR xdrs;
@@ -13,6 +15,7 @@ int xEncodeMsg(char *buffer, struct MsgXdr *m)
 	xdr_string(&xdrs, (char**)&p, strlen(m->name));
 	p = m->number;
 	xdr_string(&xdrs, (char**)&p, strlen(m->number));
+	xdr_destroy(&xdrs);
 	return 0;
 }
 
@@ -27,5 +30,6 @@ int xDecodeMsg(char *buffer, struct MsgXdr *m)
 	xdr_string(&xdrs, (char**)&p, 128);
 	p = m->number;
 	xdr_string(&xdrs, (char**)&p, 24);
+	xdr_destroy(&xdrs);
 	return 0;
 }

@@ -139,6 +139,12 @@ tcpxdr:
 tcpxdrd:
 	gcc -I/usr/include/tirpc -I./chapter19 chapter19/rdwrnonblckio.c chapter19/xdr_common_endc.c chapter19/passivesock.c chapter19/passiveTCP.c chapter7/errexit.c chapter19/TCP_xdr_server.c -ltirpc -o xserver
 
+udpxdr:
+	gcc -I/usr/include/tirpc -I./chapter19 chapter19/connectsock.c chapter19/connectUDP.c chapter7/errexit.c chapter19/UDP_xdr_client.c -ltirpc -o xclient
+	
+udpxdrd:
+	gcc -I/usr/include/tirpc -I./chapter19 chapter19/passivesock.c chapter19/passiveUDP.c chapter7/errexit.c chapter19/UDP_xdr_server.c -ltirpc -o xserver
+
 all: daytimetcp daytimedtcp timeudp timetcp timedudp echotcp echodtcp mechodtcp mdaytimedtcp mdaytimed msvcdudp superd inetd_daytimed inetd_echod techo xclient xserver
 
 clean:

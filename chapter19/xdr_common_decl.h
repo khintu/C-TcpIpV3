@@ -11,5 +11,9 @@ struct MsgXdr {
 
 int xEncodeMsg(char *buffer, struct MsgXdr *m);
 int xDecodeMsg(char *buffer, struct MsgXdr *m);
+int xEncodeRec(int s, struct MsgXdr *m);
+int xDecodeRec(int s, struct MsgXdr *m);
+int xEncodeRec2(int s, struct MsgXdr *m);
+int xDecodeRec2(int s, struct MsgXdr *m);
 
 #endif /* XDR_COMMON_DECL_H */

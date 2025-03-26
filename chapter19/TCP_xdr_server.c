@@ -11,7 +11,6 @@
 
 int errexit(const char *format, ...);
 int passiveTCP(const char *service, const int qlen);
-int TCPdaytimed(int fd);
 int sendNBytes(int s, void *buf, int nchars);
 int recvNBytes(int s, void *buf, int nchars);
 
